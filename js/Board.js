@@ -7,9 +7,19 @@ var board = {
 	element: $('#board .column-container')
 };
 
-$('.create-column')
-	.click(function(){
-		board.createColumn(new Column(prompt('Wpisz nazwę kolumny')));
+$('.create-column').click(function(){
+		var columnName = prompt('Wpisz nazwę kolumny');
+		$.ajax({
+			url: baseUrl + '/column',
+			method: 'POST',
+			data: {
+				name: columnName
+			},
+			success: function(response){
+				var column = newColumn(response.id, columnName);
+				board.createColumn(column);
+				}
+			});
 	});
 	
 function initSortable() {
